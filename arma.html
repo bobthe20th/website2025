@@ -44,10 +44,6 @@ L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   noWrap: true
 }).addTo(map);
 
-// 🚨 THIS is the important change
-map.setView([IMAGE_SIZE / 2, IMAGE_SIZE / 2], 0);
-
-L.marker([512, 512]).addTo(map);
 </script>
 
 </body>
