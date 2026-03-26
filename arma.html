@@ -25,15 +25,12 @@ const TILE_SIZE = 512;
 const MAX_ZOOM = 4;
 const IMAGE_SIZE = 1024;
 
-// Define bounds
 const bounds = [[0, 0], [IMAGE_SIZE, IMAGE_SIZE]];
 
 const map = L.map('map', {
   crs: L.CRS.Simple,
   minZoom: 0,
-  maxZoom: MAX_ZOOM,
-  maxBounds: bounds,
-  maxBoundsViscosity: 1.0
+  maxZoom: MAX_ZOOM
 });
 
 // Tiles
@@ -44,6 +41,10 @@ L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   noWrap: true
 }).addTo(map);
 
+// ✅ Proper fit (no anchoring issues) I HATE YOU CHATGPT
+map.fitBounds(bounds);
+
+L.marker([512, 512]).addTo(map);
 </script>
 
 </body>
