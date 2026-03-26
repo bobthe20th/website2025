@@ -23,36 +23,44 @@
 <script>
 const TILE_SIZE = 512;
 const MAX_ZOOM = 4;
-
-// Size of image at zoom 0
 const IMAGE_SIZE = 1024;
 
-// Define bounds (IMPORTANT)
 const bounds = [[0, 0], [IMAGE_SIZE, IMAGE_SIZE]];
 
 const map = L.map('map', {
   crs: L.CRS.Simple,
   minZoom: 0,
   maxZoom: MAX_ZOOM,
-  zoomSnap: 1,
-  zoomDelta: 1
+  maxBounds: bounds,
+  maxBoundsViscosity: 1.0
 });
 
-// Add tiles
-L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
+// 👇 create layer first
+const layer = L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   tileSize: TILE_SIZE,
   minZoom: 0,
   maxZoom: MAX_ZOOM,
-  noWrap: true,
-  bounds: bounds   // 👈 THIS IS CRITICAL
-}).addTo(map);
+  noWrap: true
+});
 
-// Fit map to your image
+// 👇 override tile requests
+layer.getTileUrl = function(coords) {
+  const tilesAtZoom = (IMAGE_SIZE / TILE_SIZE) * Math.pow(2, coords.z);
+
+  if (
+    coords.x < 0 || coords.y < 0 ||
+    coords.x >= tilesAtZoom || coords.y >= tilesAtZoom
+  ) {
+    return ''; // 🚫 stops request completely
+  }
+
+  return L.Util.template(this._url, coords);
+};
+
+layer.addTo(map);
+
 map.fitBounds(bounds);
-
-// Example marker (center of map)
 L.marker([512, 512]).addTo(map);
-
 </script>
 
 </body>
