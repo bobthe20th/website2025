@@ -25,7 +25,8 @@ const TILE_SIZE = 512;
 const MAX_ZOOM = 4;
 const IMAGE_SIZE = 1024;
 
-const bounds = [[0, 0], [IMAGE_SIZE, IMAGE_SIZE]];
+// I need to fix the co-ordinate system, I don't know what I need to fix to make the bottom left start at 0,0
+const bounds = [[-IMAGE_SIZE, 0], [0, IMAGE_SIZE]];
 
 const map = L.map('map', {
   crs: L.CRS.Simple,
@@ -33,7 +34,6 @@ const map = L.map('map', {
   maxZoom: MAX_ZOOM
 });
 
-// Tiles
 L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   tileSize: TILE_SIZE,
   minZoom: 0,
@@ -41,10 +41,8 @@ L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   noWrap: true
 }).addTo(map);
 
-// ✅ Proper fit (no anchoring issues) I HATE YOU CHATGPT
 map.fitBounds(bounds);
 
-L.marker([512, 512]).addTo(map);
 </script>
 
 </body>
