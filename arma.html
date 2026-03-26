@@ -43,6 +43,15 @@ L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
 
 map.fitBounds(bounds);
 
+map.on('click', function (e) {
+    var lat = e.latlng.lat;
+    var lng = e.latlng.lng;
+
+    var marker = L.marker([lat, lng]).addTo(map);
+
+    marker.bindPopup("Latitude: " + lat + "<br>Longitude: " + lng + "<p>The co-ordinates are borked. Will fix another time.</p>").openPopup();
+});
+
 </script>
 
 </body>
