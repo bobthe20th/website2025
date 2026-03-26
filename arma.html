@@ -25,6 +25,7 @@ const TILE_SIZE = 512;
 const MAX_ZOOM = 4;
 const IMAGE_SIZE = 1024;
 
+// Define bounds
 const bounds = [[0, 0], [IMAGE_SIZE, IMAGE_SIZE]];
 
 const map = L.map('map', {
@@ -35,31 +36,17 @@ const map = L.map('map', {
   maxBoundsViscosity: 1.0
 });
 
-// 👇 create layer first
-const layer = L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
+// Tiles
+L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   tileSize: TILE_SIZE,
   minZoom: 0,
   maxZoom: MAX_ZOOM,
   noWrap: true
-});
+}).addTo(map);
 
-// 👇 override tile requests
-layer.getTileUrl = function(coords) {
-  const tilesAtZoom = (IMAGE_SIZE / TILE_SIZE) * Math.pow(2, coords.z);
+// 🚨 THIS is the important change
+map.setView([IMAGE_SIZE / 2, IMAGE_SIZE / 2], 0);
 
-  if (
-    coords.x < 0 || coords.y < 0 ||
-    coords.x >= tilesAtZoom || coords.y >= tilesAtZoom
-  ) {
-    return ''; // 🚫 stops request completely
-  }
-
-  return L.Util.template(this._url, coords);
-};
-
-layer.addTo(map);
-
-map.fitBounds(bounds);
 L.marker([512, 512]).addTo(map);
 </script>
 
