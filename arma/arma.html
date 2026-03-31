@@ -51,14 +51,20 @@ var farm = L.marker([-288, 383], {icon: greenIcon}).bindPopup('This is Littleton
     industrial    = L.marker([-535, 490]).bindPopup('This is Golden, CO.'); //Industial
 var depots = L.layerGroup([farm, gorey, figari, levvie, regina, durras, sawmill, industrial]);
 
+//Repair Depots
+var phil1 = L.marker([-201, 346]).bindPopup('This is Golden, CO.'); //St. Philippe North
+    phil2 = L.marker([-230, 361]).bindPopup('This is Golden, CO.'); //St. Philippe South
+    industrialnorth = L.marker([-222, 388]).bindPopup('This is Golden, CO.'); //St. Philippe South
+    powerplant = L.marker([-303, 445]).bindPopup('This is Golden, CO.'); //St. Philippe South
+
+var repair = L.layerGroup([phil1, phil2, industrialnorth,powerplant]);
+
 var newmap = L.tileLayer('./everon_tiles/{z}/{x}/{y}/tile.jpg', {
   tileSize: TILE_SIZE,
   minZoom: 0,
   maxZoom: MAX_ZOOM,
   noWrap: true
 });
-
-
 
 //Creates map and layer system
 var map = L.map('map', {
@@ -73,7 +79,8 @@ var baseMaps = {
 };
 
 var overlayMaps = {
-    "Supply Depots": depots
+    "Supply Depots": depots,
+    "Repair Points": repair,
 };
 
 var layerControl = L.control.layers(baseMaps, overlayMaps).addTo(map);
